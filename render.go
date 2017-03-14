@@ -24,6 +24,22 @@ import (
 	"github.com/cbroglie/mustache"
 )
 
+func Render(template []string, target string, context ...interface{}) error {
+	if len(template) <= 0 {
+		if len(target) <= 0 {
+			return RenderStream2Stream(os.Stdin, os.Stdout, context...)
+		} else {
+			return RenderStream2File(os.Stdin, target, context...)
+		}
+	} else {
+		if len(target) <= 0 {
+			return RenderFiles2Stream(template, os.Stdout, context...)
+		} else {
+			return RenderFiles2File(template, target, context...)
+		}
+	}
+}
+
 func RenderStream2Stream(in io.Reader, out io.Writer, context ...interface{}) error {
 	data, err := ioutil.ReadAll(in)
 	if err != nil {

@@ -26,6 +26,21 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
+var (
+	JsonParam bool
+	YamlParam bool
+)
+
+func Parse(paramFile string) (interface{}, error) {
+	if JsonParam {
+		return ParseJson(paramFile)
+	} else if YamlParam {
+		return ParseYaml(paramFile)
+	} else {
+		return ParseProps(paramFile)
+	}
+}
+
 func ParseProps(paramFile string) (interface{}, error) {
 
 	data, err := ioutil.ReadFile(paramFile)
